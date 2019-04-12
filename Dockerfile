@@ -1,13 +1,11 @@
 FROM node:latest
 
-RUN mkdir -p /usr/src/app/
-WORKDIR /usr/src/app/
+RUN mkdir /app
+WORKDIR /app
 
-COPY package.json /usr/src/app/
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package.json package-lock.json /app/
 RUN npm install
 
-COPY . .
-
-EXPOSE 3000
-
-CMD npm start
+COPY . /app/
