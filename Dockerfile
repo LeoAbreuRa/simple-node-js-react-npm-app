@@ -1,9 +1,9 @@
 
 FROM node:latest
 
-WORKDIR /usr/src/app/
+WORKDIR /simple-node-js-react-npm-app/src/app/
 
-COPY package.json ./usr/src/app/
+COPY package.json ./simple-node-js-react-npm-app/src/app/
 RUN npm install
 
 COPY . .
