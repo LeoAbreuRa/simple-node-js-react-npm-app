@@ -1,11 +1,14 @@
+
 FROM node:latest
 
-RUN mkdir /app
-WORKDIR /app
+RUN mkdir -p /usr/src/app/
+WORKDIR /usr/src/app/
 
-ENV PATH /app/node_modules/.bin:$PATH
-
-COPY package.json package-lock.json /app/
+COPY package.json . # remember the working directory is `/usr/src/app/`
 RUN npm install
 
-COPY . /app/
+COPY . .
+
+EXPOSE 3000
+
+CMD npm start
