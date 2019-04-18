@@ -1,13 +1,22 @@
+RUN apk --no-cache add curl
 
-FROM node:latest
+FROM node:4.3.2
 
-WORKDIR /simple-node-js-react-npm-app/src/app/
+RUN useradd --user-group --create-home --shell /bin/false app &&\
+  npm install --global npm@3.7.5
 
-COPY package.json ./simple-node-js-react-npm-app/src/app/
-RUN npm install
+ENV HOME=/home/app
 
-COPY . .
+COPY package.json npm-shrinkwrap.json $HOME/library/
+RUN chown -R app:app $HOME/*
 
-EXPOSE 3000
+USER app
+WORKDIR $HOME/library
+RUN npm cache clean && npm install --silent --progress=false
 
-CMD [ "npm", "start"]
+USER root
+COPY . $HOME/library
+RUN chown -R app:app $HOME/*
+USER app
+
+CMD ["npm", "start"]
